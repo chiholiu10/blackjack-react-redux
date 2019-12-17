@@ -3,23 +3,18 @@ import { connect } from 'react-redux';
 import { 
   getCard, 
   shuffleCards,
-  resetGame
+  resetGame, 
+  toggle
 } from './actions/index';
 
-const App = ({ getCard, shuffleCards, disableButton, resetGame }) => {
+const App = ({ getCard, shuffleCards, disableButton, resetGame, currentFlippedCard, toggle }) => {
 
   useEffect(() => {
     console.log('loading');
   });
 
   const shuffleAllCards = () => {
-    console.log(disableButton);
-    if(disableButton) {
-      shuffleCards();
-    } 
-
-    console.log()
-    return;
+    shuffleCards();
   }
 
   const reset = () => {
@@ -28,15 +23,20 @@ const App = ({ getCard, shuffleCards, disableButton, resetGame }) => {
 
   const newCard = () => {
     getCard();
+  }
 
+  const fold = () => {
+    toggle();
   }
 
   return (
     <div>
       <div className="App">
-        <button onClick={shuffleAllCards }>Shuffle Cards</button>
+        <button onClick={shuffleAllCards } disabled={!disableButton}>Shuffle Cards</button>
         <button onClick={newCard}>Get Card</button>
-        <button onClick={reset}>Reset</button>
+        <button onClick={reset} disabled={disableButton}>Reset</button>
+        <button onClick={fold}>Fold</button>
+        <div>{currentFlippedCard}</div>
       </div>
     </div>
   );
@@ -45,13 +45,15 @@ const App = ({ getCard, shuffleCards, disableButton, resetGame }) => {
 const mapDispatchToProps = dispatch => ({
   getCard: (currentArray) => dispatch(getCard(currentArray)),
   shuffleCards: () => dispatch(shuffleCards()),
-  resetGame: () => dispatch(resetGame())
+  resetGame: () => dispatch(resetGame()),
+  toggle: () => dispatch(toggle())
 });
 
 const mapStateToProps = state => {
   return {
     allFlippedCards: state.game.arrayFoldedCards,
-    disableButton: state.game.disableButton
+    disableButton: state.game.disableButton,
+    currentFlippedCard: state.game.currentFoldedCard
   }
 }
 
