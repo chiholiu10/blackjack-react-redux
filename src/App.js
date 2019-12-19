@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { playerScore } from './components/score';
 import { 
   getCard, 
   shuffleCards,
@@ -7,7 +8,16 @@ import {
   toggle
 } from './actions/index';
 
-const App = ({ getCard, shuffleCards, disableButton, resetGame, currentFlippedCard, toggle }) => {
+const App = ({ 
+  getCard, 
+  shuffleCards, 
+  disableButton, 
+  resetGame, 
+  player,
+  computer,
+  toggle,
+  disabledFoldButton
+}) => {
 
   useEffect(() => {
     console.log('loading');
@@ -25,6 +35,8 @@ const App = ({ getCard, shuffleCards, disableButton, resetGame, currentFlippedCa
     getCard();
   }
 
+  console.l
+
   const fold = () => {
     toggle();
   }
@@ -33,10 +45,19 @@ const App = ({ getCard, shuffleCards, disableButton, resetGame, currentFlippedCa
     <div>
       <div className="App">
         <button onClick={shuffleAllCards } disabled={!disableButton}>Shuffle Cards</button>
-        <button onClick={newCard}>Get Card</button>
+        <button onClick={newCard} disabled={disableButton}>Get Card</button>
         <button onClick={reset} disabled={disableButton}>Reset</button>
-        <button onClick={fold}>Fold</button>
-        <div>{currentFlippedCard}</div>
+        <button onClick={fold} disabled={disableButton}>Fold</button>
+      
+        <div>
+          <p>Player</p>
+          <div>{player}</div>
+        </div>
+        <div>
+          <p>Computer</p>
+          <div>{computer}</div>
+        </div>
+
       </div>
     </div>
   );
@@ -53,7 +74,9 @@ const mapStateToProps = state => {
   return {
     allFlippedCards: state.game.arrayFoldedCards,
     disableButton: state.game.disableButton,
-    currentFlippedCard: state.game.currentFoldedCard
+    disabledFoldButton: state.game.disableToggle,
+    player: state.game.playerCards,
+    computer: state.game.computerCards
   }
 }
 

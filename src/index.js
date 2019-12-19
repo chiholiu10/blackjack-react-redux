@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App.js';
+import Score from './components/score.js';
 import { Provider } from 'react-redux';
 import game from './reducers/index';
 import thunk from 'redux-thunk';
@@ -16,6 +17,7 @@ export const store = createStore(
 const Game = () => (
     <Provider store={store}>
         <App/>
+        <Score/>
     </Provider>
 )
 

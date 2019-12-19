@@ -7,6 +7,7 @@ const initialState = {
     arrayFoldedCards: [],
     currentCardArray: [],
     disableButton: true,
+    disableToggle: true,
     fold: false
 };
 
@@ -19,7 +20,8 @@ export const game = (state = initialState, action) => {
                 ...state,
                 // copy array into currentCardArray
                 currentCardArray: [].concat(allCards),
-                disableButton: false
+                disableButton: false,
+                disableFoldButton: true
             }
         }
 
@@ -31,21 +33,25 @@ export const game = (state = initialState, action) => {
             return {
                 ...state,
                 currentFoldedCard: updatedArray,
-                [currentPlayer]: [...state[currentPlayer].concat(updatedArray)]
+                [currentPlayer]: [...state[currentPlayer].concat(updatedArray)],
+                currentScore: state.fold
             }
         }
 
         case types.RESET_GAME: {
             return {
                 ...state,
-                disableButton: true
+                disableButton: true,
+                fold: false,
+                playerCards: [],
+                computerCards: []
             }
         }
 
         case types.TOGGLE: {
             return {
                 ...state,
-                fold: !state.fold
+                fold: true
             }
         }
 
