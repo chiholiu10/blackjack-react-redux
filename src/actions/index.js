@@ -15,8 +15,12 @@ export const shuffleCards = () => ({
 
 export const resetGame = () => ({
     type: types.RESET_GAME
-})
+});
 
 export const toggle = () => ({
     type: types.TOGGLE
-})
+});
+
+export const score = () => ({
+    type: types.SCORE
+});

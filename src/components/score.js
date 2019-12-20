@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { resetGame } from '../actions';
 
 const Score = ({player, computer}) => {
     const getScore = currentPlayer =>
@@ -15,6 +16,14 @@ const Score = ({player, computer}) => {
                     return a + b;
                 }
         }, 0);
+
+        if(getScore(player) > 21) {
+            console.log('player dead');
+        } 
+
+        if(getScore(computer) > 17) {
+            console.log('computer stop shuffling');
+        }
 
         return (
             <div>

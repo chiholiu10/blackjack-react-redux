@@ -55,6 +55,14 @@ export const game = (state = initialState, action) => {
             }
         }
 
+        case types.SCORE: {
+            return {
+                ...state,
+                playerScore: action.getPlayerScore,
+                computerScore: action.getPlayerScore
+            }
+        }
+
         default:
             return state;
     }

@@ -15,8 +15,7 @@ const App = ({
   resetGame, 
   player,
   computer,
-  toggle,
-  disabledFoldButton
+  toggle
 }) => {
 
   useEffect(() => {
