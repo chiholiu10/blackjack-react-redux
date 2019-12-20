@@ -1,5 +1,12 @@
 import { types } from "../actions/index";
 
+export const resultStatus = {
+    PLAYING: 'Playing',
+    WIN: 'Win',
+    EQUAL: 'Equal',
+    LOSE: 'Lose'
+}
+
 const initialState = {
     array: [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A'],
     playerCards: [],
@@ -8,7 +15,8 @@ const initialState = {
     currentCardArray: [],
     disableButton: true,
     disableToggle: true,
-    fold: false
+    fold: false,
+    currentStatusGame: resultStatus.PLAYING
 };
 
 export const game = (state = initialState, action) => {
@@ -21,7 +29,8 @@ export const game = (state = initialState, action) => {
                 // copy array into currentCardArray
                 currentCardArray: [].concat(allCards),
                 disableButton: false,
-                disableFoldButton: true
+                disableFoldButton: true,
+                currentStatusGame: resultStatus.PLAYING
             }
         }
 
@@ -44,11 +53,14 @@ export const game = (state = initialState, action) => {
                 disableButton: true,
                 fold: false,
                 playerCards: [],
-                computerCards: []
+                computerCards: [],
+                playerFinalScore: 0,
+                computerFinalScore: 0
             }
         }
 
         case types.TOGGLE: {
+            console.log('toggling')
             return {
                 ...state,
                 fold: true
@@ -58,8 +70,28 @@ export const game = (state = initialState, action) => {
         case types.SCORE: {
             return {
                 ...state,
-                playerScore: action.getPlayerScore,
-                computerScore: action.getPlayerScore
+                playerScore: action.getPlayerScore
+            }
+        }
+
+        case types.CHECK_WINNER: {
+            const win = action.playerScore < 21 && action.computerScore < action.playerScore;
+            const equal = action.playerScore < 21 && action.player === action.computerScore;
+            const lose = action.playerScore < 21 && action.player < action.computerScore || action.playerScore > 21;
+
+            const currentResultStatus = () => {
+                if(win) return resultStatus.WIN;
+                if(equal) return resultStatus.EQUAL;
+                if(lose) return resultStatus.LOSE;
+                return resultStatus.PLAYING;
+            }
+
+
+            return {
+                ...state,
+                playerFinalScore: action.playerScore,
+                computerFinalScore: action.computerScore,
+                currentStatusGame: currentResultStatus()
             }
         }
 

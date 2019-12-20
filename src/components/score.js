@@ -1,8 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { resetGame } from '../actions';
+import { 
+    resetGame,
+    fold, 
+    checkWinner
+} from '../actions/index';
 
-const Score = ({player, computer}) => {
+const Score = ({ 
+    player, 
+    computer, 
+    fold, 
+    checkWinner, 
+    resetGame
+}) => {
     const getScore = currentPlayer =>
         currentPlayer.reduce((a, b) => {
             switch (b) {
@@ -18,11 +28,12 @@ const Score = ({player, computer}) => {
         }, 0);
 
         if(getScore(player) > 21) {
-            console.log('player dead');
+            fold();
         } 
 
         if(getScore(computer) > 17) {
-            console.log('computer stop shuffling');
+            checkWinner(getScore(player), getScore(computer));
+            resetGame();
         }
 
         return (
@@ -39,12 +50,19 @@ const Score = ({player, computer}) => {
         )
     }
 
-    const mapStateToProps = state => {
-        return {
-            player: state.game.playerCards,
-            computer: state.game.computerCards,
-            currentPlayer: state.game.currentScore ? 'player' : 'computer'
-        }
-    }
+const mapDispatchToProps = dispatch => ({
+    fold: () => dispatch(fold()),
+    checkWinner: (getPlayerScore, getComputerScore) => dispatch(checkWinner(getPlayerScore, getComputerScore)),
+    resetGame: () => dispatch(resetGame())
+});
 
-export default connect(mapStateToProps, null)(Score);
+const mapStateToProps = state => {
+    console.log();
+    return {
+        player: state.game.playerCards,
+        computer: state.game.computerCards,
+        currentPlayer: state.game.currentScore ? 'player' : 'computer'
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Score);

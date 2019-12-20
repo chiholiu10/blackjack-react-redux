@@ -2,7 +2,8 @@ export const types = {
     SHUFFLE_CARD: 'SHUFFLE_CARD',
     GET_CARD: 'GET_CARD',
     RESET_GAME: 'RESET_GAME',
-    TOGGLE: 'TOGGLE'
+    TOGGLE: 'TOGGLE',
+    CHECK_WINNER: 'CHECK_WINNER'
 }   
 
 export const getCard = () => ({
@@ -17,10 +18,12 @@ export const resetGame = () => ({
     type: types.RESET_GAME
 });
 
-export const toggle = () => ({
+export const fold = () => ({
     type: types.TOGGLE
 });
 
-export const score = () => ({
-    type: types.SCORE
+export const checkWinner = (playerScore, computerScore) => ({
+    type: types.CHECK_WINNER,
+    playerScore,
+    computerScore
 });
